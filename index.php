@@ -51,6 +51,14 @@
       color: #64748b;
     }
 
+    #genre-list .ais-SearchBox {
+      margin-bottom: 1rem;
+    }
+
+    #genre-list .ais-RefinementList-list {
+      margin-top: 0.5rem;
+    }
+
     .ais-SearchBox-submit,
     .ais-SearchBox-reset,
     .ais-ClearRefinements-button {
@@ -379,13 +387,14 @@
       instantsearch.widgets.refinementList({
         container: '#genre-list',
         attribute: 'genres',
-        operator: 'and',
-        searchable: true,
+        operator: 'or',
+        searchable: {
+          placeholder: 'Search genres',
+        },
         showMore: true,
         limit: 8,
         showMoreLimit: 30,
         sortBy: ['isRefined', 'count:desc', 'name:asc'],
-        searchablePlaceholder: 'Search genres',
       }),
 
       instantsearch.widgets.menuSelect({
