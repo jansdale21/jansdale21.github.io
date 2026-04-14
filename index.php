@@ -55,6 +55,10 @@
       margin-bottom: 1rem;
     }
 
+    #genre-list .ais-SearchBox .ais-SearchBox-reset {
+      display: none;
+    }
+
     #genre-list .ais-RefinementList-list {
       margin-top: 0.5rem;
     }
@@ -119,13 +123,14 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0.95rem 1rem;
+      padding: 0.75rem 0.95rem;
       border-radius: 1.25rem;
       background: rgba(148, 163, 184, 0.06);
       color: #e2e8f0;
       cursor: pointer;
       border: 1px solid rgba(148, 163, 184, 0.12);
-      min-height: 3rem;
+      min-height: 2.5rem;
+      font-size: 0.92rem;
     }
 
     .ais-RefinementList-item--selected label {
@@ -136,6 +141,44 @@
     .ais-RefinementList-count {
       color: #94a3b8;
       font-size: 0.95rem;
+    }
+
+    * {
+      scrollbar-width: thin;
+      scrollbar-color: rgba(124, 58, 237, 0.6) rgba(15, 23, 42, 0.7);
+    }
+
+    *::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    *::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.6);
+      border-radius: 9999px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+      background: rgba(124, 58, 237, 0.5);
+      border-radius: 9999px;
+      border: 2px solid rgba(15, 23, 42, 0.6);
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+      background: rgba(124, 58, 237, 0.75);
+    }
+
+    .ais-RefinementList-list::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .ais-RefinementList-list::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.55);
+    }
+
+    .ais-RefinementList-list::-webkit-scrollbar-thumb {
+      background: rgba(124, 58, 237, 0.55);
+      border: 2px solid rgba(15, 23, 42, 0.55);
     }
 
     .ais-Pagination {
@@ -387,10 +430,8 @@
       instantsearch.widgets.refinementList({
         container: '#genre-list',
         attribute: 'genres',
-        operator: 'or',
-        searchable: {
-          placeholder: 'Search genres',
-        },
+        operator: 'and',
+        searchable: false,
         showMore: true,
         limit: 8,
         showMoreLimit: 30,
@@ -466,6 +507,36 @@
         showMovieDetail(event, hitCard.dataset.hit);
       }
     });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') return;
+      const target = event.target;
+      if (target instanceof HTMLElement && target.matches('.ais-SearchBox-input') && target.closest('#genre-list')) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
+
+    const updateGenreShowMoreVisibility = () => {
+      const genreList = document.getElementById('genre-list');
+      if (!genreList) return;
+      const showMoreButton = genreList.querySelector('.ais-RefinementList-showMore');
+      if (!showMoreButton) return;
+      const hasSelectedGenre = genreList.querySelector('.ais-RefinementList-item--selected') !== null;
+      showMoreButton.style.display = hasSelectedGenre ? 'none' : '';
+    };
+
+    const genreListContainer = document.getElementById('genre-list');
+    if (genreListContainer) {
+      const observer = new MutationObserver(updateGenreShowMoreVisibility);
+      observer.observe(genreListContainer, {
+        childList: true,
+        subtree: true,
+        attributes: true,
+        attributeFilter: ['class'],
+      });
+      updateGenreShowMoreVisibility();
+    }
 
     search.start();
   </script>
