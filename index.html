@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Movie Search Engine</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-slate-950 text-slate-100 antialiased">
+  <div class="min-h-screen px-4 py-6 sm:px-6 lg:px-8">
+    <div class="mx-auto grid max-w-[1680px] gap-6 grid-cols-1 xl:grid-cols-[280px_minmax(0,1fr)]">
+      <aside class="w-full max-w-[320px] space-y-6 rounded-[36px] border border-slate-800/70 bg-slate-900/75 p-6 shadow-2xl shadow-slate-950/35 backdrop-blur-xl">
+        <div class="space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-[0.32em] text-violet-400">MovieSearch</p>
+          <h1 class="text-3xl font-black tracking-tight text-white">Browse by genre & year</h1>
+        </div>
+
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Genres</p>
+          <div id="genre-list"></div>
+        </div>
+
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Year released</p>
+          <div id="year-list"></div>
+        </div>
+
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-[0.24em] text-slate-400">Reset filters</p>
+          <div id="clear-refinements"></div>
+        </div>
+      </aside>
+
+      <main class="space-y-6">
+        <section class="rounded-[36px] border border-slate-800/70 bg-slate-900/70 p-8 shadow-2xl shadow-slate-950/35 backdrop-blur-xl">
+          <div class="max-w-3xl">
+            <p class="text-sm font-semibold uppercase tracking-[0.32em] text-violet-400">Discover</p>
+            <h2 class="mt-4 text-4xl font-black tracking-tight text-white">Discover movies instantly</h2>
+            <p class="mt-4 max-w-2xl text-slate-400">Search through thousands of movies, filter by genre and release year, and explore rating plus overview details.</p>
+          </div>
+
+          <div class="mt-8" id="searchbox"></div>
+        </section>
+
+        <div class="rounded-[36px] border border-slate-800/70 bg-slate-900/70 p-5 shadow-2xl shadow-slate-950/35 backdrop-blur-xl">
+          <div id="stats" class="text-sm text-slate-400"></div>
+        </div>
+
+        <section class="space-y-5" id="hits"></section>
+
+        <div class="rounded-[36px] border border-slate-800/70 bg-slate-900/70 p-5 shadow-2xl shadow-slate-950/35 backdrop-blur-xl">
+          <div id="pagination"></div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <div id="movie-detail-modal" class="fixed inset-0 z-50 items-center justify-center overflow-y-auto bg-slate-950/85 p-4">
+    <div class="relative mx-auto w-full max-w-4xl overflow-hidden rounded-[32px] bg-slate-900 shadow-2xl shadow-slate-950/40">
+      <button id="movie-detail-close" class="absolute right-4 top-4 rounded-full border border-slate-700/80 bg-slate-950/90 px-3 py-2 text-xl text-slate-100 transition hover:bg-slate-900">×</button>
+      <div class="grid gap-6 p-6 lg:grid-cols-[320px_minmax(0,1fr)]">
+        <div id="detail-poster" class="h-[0] rounded-[28px] bg-cover bg-center bg-slate-950/40 pb-[150%]"></div>
+        <div class="space-y-4 text-slate-100">
+          <div class="space-y-2">
+            <p class="text-xs uppercase tracking-[0.32em] text-violet-400">Movie details</p>
+            <h2 id="detail-title" class="text-3xl font-black"></h2>
+            <p id="detail-meta" class="text-sm text-slate-400"></p>
+          </div>
+          <p id="detail-genres" class="text-sm text-slate-300"></p>
+          <div class="rounded-[24px] border border-slate-800/70 bg-slate-950/90 p-4 text-sm leading-6 text-slate-300" id="detail-overview"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch.umd.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@4"></script>
+  <script src="script.js"></script>
+</body>
+</html>
